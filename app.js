@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 // Connect to the database using the env variables
-mongoose.connect('mongodb://alan:secret@localhost:27017/my_database?authSource=admin', { useNewUrlParser: true })
+// change localhost to mongo_app, is the container name where our app will connect
+mongoose.connect('mongodb://alan:secret@mongo_app:27017/my_database?authSource=admin', { useNewUrlParser: true })
   .then(() => console.log('Connected to MongoDB...'))
   .catch(err => console.error('Could not connect to MongoDB...', err));
 

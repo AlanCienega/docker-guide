@@ -152,3 +152,51 @@ docker create -p27017:27017 --name mongo_app -e MONGO_INITDB_ROOT_USERNAME=alan 
 docker start mongo_app
 
 ```
+
+### redes
+
+```
+# listar
+docker network ls
+# crear
+docker network create red_mongo
+# eliminar
+docker network rm red_mongo
+```
+
+los contenedores se comunican mediante el <b> nombre del contenedor </b> cuando estan en una misma red interna. Significa que en lugar de localhost debe ser mongo_app la configuracion del app.js
+
+```
+mongodb://alan:secret@mongo_app:27017/my_database?authSource=admin
+```
+
+### docker build
+
+para crear una imagen personalizada
+
+```
+docker build -t mongo_app:1.0.0 .
+```
+
+como parametros tiene el nombre de la imagen dos puntos seguido de su tag y el directorio donde esta mi archivo Dockerfile
+
+Ahora creamos un nuevo contenedor pero en nuestra red
+
+```
+docker create -p27017:27017 --name mongo_app --network red_mongo -e MONGO_INITDB_ROOT_USERNAME=alan -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+```
+
+y otro contenedor para nuestra aplicacion y como es un levantamiento normal de un contenedor el ultimo argumento seria el nombre de la imagen en la cual nos estamos basando, en este caso es nuestra imagen de mongo personalizada o sea mongo_app:1.0.0
+
+```
+docker create -p3000:3000 --name node_app --network red_mongo mongo_app:1.0.0
+```
+
+arrancamos los contenedores
+
+```
+docker start mongo_app
+docker start node_app
+```
+
+y ya podemos ir a [localhost:3000](http://localhost:3000) a revisar nuestros datos e ingresar nuevos
