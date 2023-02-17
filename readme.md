@@ -143,3 +143,12 @@ pero podemos personalizar igual que como haciamos antes.
 ```
 docker run -d --name mongo_app -p27017:27017 mongo
 ```
+
+para levantar una aplicacion personalizada, por ejemplo el app.js que teemos, debemos usar
+
+```
+docker create -p27017:27017 --name mongo_app -e MONGO_INITDB_ROOT_USERNAME=alan -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+
+docker start mongo_app
+
+```
