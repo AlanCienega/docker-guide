@@ -35,14 +35,14 @@ app.get("/create", async (req, res) => {
   });
 
   await book.save();
-
+  console.log("guardado");
   res.send("Book created");
 });
 
 // Route to list all books
 app.get("/", async (req, res) => {
   const books = await Book.find().sort("title");
-
+  console.log("listando");
   res.send(books);
 });
 

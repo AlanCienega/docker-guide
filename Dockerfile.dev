@@ -1,0 +1,17 @@
+FROM node:19
+
+# dependencias de desarrollo para checar cambios
+RUN npm i -g nodemon
+
+RUN mkdir -p /home/app
+# indicamos la ruta donde vamos a trabajar
+WORKDIR /home/app
+
+# ya no es necesario copiar el contenido ya que se va a crear un enlace simbolico de /home/app
+# COPY . /home/app
+
+EXPOSE 3000
+
+# ahora solo con es sificiente indicar el archivo de la aplicacion
+CMD ["nodemon","app.js"]
+

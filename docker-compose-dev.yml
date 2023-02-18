@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  nodeapp:
+    # ahora tenemos que agregar la propiedad context y no "."
+    # ya que este no es el archivo de produccion sino uno de prueba
+    build:
+      context: .
+      # tambien tenemos que indicar el nombre del dockerfile, ya que antes por defecto era Dockerfile
+      # y no se tenia que especificar, pero ahora si
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    links:
+      - mongoapp
+    # volumen anonimo
+    # nos acepta dos propiedades, directorio_actual:directorio_destino_dentro_del_contenedor
+    volumes:
+      - .:/home/app
+  mongoapp:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=alan
+      - MONGO_INITDB_ROOT_PASSWORD=secret
+    volumes:
+      - mongo-data:/data/db
+volumes:
+  mongo-data:

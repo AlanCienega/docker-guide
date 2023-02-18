@@ -1,5 +1,7 @@
 # curso basico de docker
 
+Para poder entender completamente este recurso te recomiendo que despues de conar el repositorio vayas haciendo checkout a los commits. Es decir ve al commit inicial, luego al siguiente y al siguiente, leelo bien y al funal ya podras entender todos los archivos que hay hasta este punto.
+
 ## instalacion de docker
 
 en linux
@@ -236,3 +238,18 @@ los volumes serviran para separar parte del contenedor por ejemplo bases de dato
 - anonimos: indicamos la ruta en la que se monta y docker decide donde ponerla, pero no se puede referenciar por otro contenedor.
 - anfitrion: elegimos que y donde montarlo.
 - nombrado: es parecido al anonimo pero si lo podremos referenciar para reutilizarlo.
+
+## ambientes de trabajo y recarga en caliente
+
+primero tenemos que hacer un archivo parecido al dockerfile y otro al docker-compose.yml
+
+```
+cp Dockerfile Dockerfile.dev
+cp docker-compose.yml docker-compose-dev.yml
+```
+
+y cuando esten listos esos archivos vamos a construir nuestra aplicacion de desarrollo.
+
+```
+docker compose -f docker-compose-dev.yml up
+```
