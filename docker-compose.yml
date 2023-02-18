@@ -1,0 +1,21 @@
+version: "3.9"
+
+# en services vamos a poner los nombres que vamos a asignar a los contenedores
+services:
+  nodeapp:
+    # construye el contenedor con la configuracion que hay en este directorio
+    build: .
+    # mapeo de  puertos, anfitrion:contenedor
+    ports:
+      - "3000:3000"
+    # nombres de el/los contenedores que vayan a usar a nuestro contenedor actual
+    # es decir mongoapp va a usar nodeapp
+    links:
+      - mongoapp
+  mongoapp:
+    image: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=alan
+      - MONGO_INITDB_ROOT_PASSWORD=secret

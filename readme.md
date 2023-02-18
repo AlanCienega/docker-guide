@@ -1,5 +1,15 @@
 # curso basico de docker
 
+## instalacion de docker
+
+en linux
+
+```
+sudo apt install docker-ce
+```
+
+en windows solo baja el ejecutable y dale next text next
+
 ## Imagenes
 
 <b> Descargar imagenes </b>
@@ -88,9 +98,9 @@ docker rm nombre_contenedor
 
 en el escenario de tener varias aplicaciones incluso sin son basadas en la misma imagen, podemos mapear sus puertos para acceder sin que haya conflictos, ejemplo:
 
-- node_app_1 expone el puerto 3000
-- node_app_2 expone el puerto 3000
-- mongo_app expone el puerto 27017
+- nodeapp_1 expone el puerto 3000
+- nodeapp_2 expone el puerto 3000
+- mongoapp expone el puerto 27017
   si todas las aplicaciones se comunican nosotros podemos configurar que nuestra computadora acceda a los recursos a travez de los puertos
 - 3000
 - 3001
@@ -99,7 +109,7 @@ en el escenario de tener varias aplicaciones incluso sin son basadas en la misma
 respectivamente
 
 ```
-docker create -p27017:27017 --name mongo_app mongo
+docker create -p27017:27017 --name mongoapp mongo
 ```
 
 la opcion -p acepta como primer argumento el puerto por el que vamos a acceder, y el segundo es el puerto del contenedor. lueego de esto debemos iniciar el contenedor. y cuando lo listemos obtendremos en la parte de PORTS algo como lo siguiente:
@@ -117,9 +127,9 @@ en caso de no especificar puerto, docker elige el puerto por ti pero se veria co
 ### logs
 
 ```
-docker logs mongo_app
+docker logs mongoapp
 # quedarse en modo escucha
-docker logs --folow mongo_app
+docker logs --folow mongoapp
 ```
 
 para salir dale ctrl+c
@@ -141,15 +151,15 @@ docker run -d mongo
 pero podemos personalizar igual que como haciamos antes.
 
 ```
-docker run -d --name mongo_app -p27017:27017 mongo
+docker run -d --name mongoapp -p27017:27017 mongo
 ```
 
 para levantar una aplicacion personalizada, por ejemplo el app.js que teemos, debemos usar
 
 ```
-docker create -p27017:27017 --name mongo_app -e MONGO_INITDB_ROOT_USERNAME=alan -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+docker create -p27017:27017 --name mongoapp -e MONGO_INITDB_ROOT_USERNAME=alan -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
 
-docker start mongo_app
+docker start mongoapp
 
 ```
 
@@ -164,10 +174,10 @@ docker network create red_mongo
 docker network rm red_mongo
 ```
 
-los contenedores se comunican mediante el <b> nombre del contenedor </b> cuando estan en una misma red interna. Significa que en lugar de localhost debe ser mongo_app la configuracion del app.js
+los contenedores se comunican mediante el <b> nombre del contenedor </b> cuando estan en una misma red interna. Significa que en lugar de localhost debe ser mongoapp la configuracion del app.js
 
 ```
-mongodb://alan:secret@mongo_app:27017/my_database?authSource=admin
+mongodb://alan:secret@mongoapp:27017/my_database?authSource=admin
 ```
 
 ### docker build
@@ -175,7 +185,7 @@ mongodb://alan:secret@mongo_app:27017/my_database?authSource=admin
 para crear una imagen personalizada
 
 ```
-docker build -t mongo_app:1.0.0 .
+docker build -t mongoapp:1.0.0 .
 ```
 
 como parametros tiene el nombre de la imagen dos puntos seguido de su tag y el directorio donde esta mi archivo Dockerfile
@@ -183,20 +193,38 @@ como parametros tiene el nombre de la imagen dos puntos seguido de su tag y el d
 Ahora creamos un nuevo contenedor pero en nuestra red
 
 ```
-docker create -p27017:27017 --name mongo_app --network red_mongo -e MONGO_INITDB_ROOT_USERNAME=alan -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
+docker create -p27017:27017 --name mongoapp --network red_mongo -e MONGO_INITDB_ROOT_USERNAME=alan -e MONGO_INITDB_ROOT_PASSWORD=secret mongo
 ```
 
-y otro contenedor para nuestra aplicacion y como es un levantamiento normal de un contenedor el ultimo argumento seria el nombre de la imagen en la cual nos estamos basando, en este caso es nuestra imagen de mongo personalizada o sea mongo_app:1.0.0
+y otro contenedor para nuestra aplicacion y como es un levantamiento normal de un contenedor el ultimo argumento seria el nombre de la imagen en la cual nos estamos basando, en este caso es nuestra imagen de mongo personalizada o sea mongoapp:1.0.0
 
 ```
-docker create -p3000:3000 --name node_app --network red_mongo mongo_app:1.0.0
+docker create -p3000:3000 --name nodeapp --network red_mongo mongoapp:1.0.0
 ```
 
 arrancamos los contenedores
 
 ```
-docker start mongo_app
-docker start node_app
+docker start mongoapp
+docker start nodeapp
 ```
 
 y ya podemos ir a [localhost:3000](http://localhost:3000) a revisar nuestros datos e ingresar nuevos
+
+## docker compose
+
+para automatizar los comandos anteriores tenemos un archivo de configuracion llamado docker-compose.yml que consta de varias partes, la version de la sintaxis al principio, nombre de los servicios, redes etc.
+
+Y con la configuracion del yml vamos a correr
+
+```
+docker compose up
+```
+
+y tambien se puede usar el siguiente para eliminar los contenedores y la red de forma automatica
+
+```
+docker compose down
+```
+
+Es importante notar que cuando declaramos nuestros componentes en el archivo yml, ya no es necesario declarar una red, ya que docker lo hace automaticamente para nuestros contenedores.
