@@ -228,3 +228,11 @@ docker compose down
 ```
 
 Es importante notar que cuando declaramos nuestros componentes en el archivo yml, ya no es necesario declarar una red, ya que docker lo hace automaticamente para nuestros contenedores.
+
+## volumenes
+
+los volumes serviran para separar parte del contenedor por ejemplo bases de datos para que sean persistentes y no se eliminen cuando se recarguen los contenedores, hay de 3 tipos:
+
+- anonimos: indicamos la ruta en la que se monta y docker decide donde ponerla, pero no se puede referenciar por otro contenedor.
+- anfitrion: elegimos que y donde montarlo.
+- nombrado: es parecido al anonimo pero si lo podremos referenciar para reutilizarlo.

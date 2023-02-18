@@ -19,3 +19,13 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=alan
       - MONGO_INITDB_ROOT_PASSWORD=secret
+    # aqui indicamos que volumen vamos a usar, deben estar ya declarados.
+    # seguido le indicamos donde se guarda la base de datos
+    volumes:
+      - mongo-data:/data/db
+      # mysql-data:/var/lib/mysql
+      # postgres-data:/vat/lib/postgresql/data
+
+# definimos los volumenes que van a usar los contenedores
+volumes:
+  mongo-data:
