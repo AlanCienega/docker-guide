@@ -1,6 +1,6 @@
-# curso basico de docker
+# guia de docker
 
-Para poder entender completamente este recurso te recomiendo que despues de conar el repositorio vayas haciendo checkout a los commits. Es decir ve al commit inicial, luego al siguiente y al siguiente, leelo bien y al funal ya podras entender todos los archivos que hay hasta este punto.
+Para poder entender completamente este recurso te recomiendo que despues de clonar el repositorio y vayas haciendo checkout a los commits. Es decir ve al commit inicial, luego al siguiente y al siguiente, leelo bien y al funal ya podras entender todos los archivos que hay hasta este punto.
 
 ## instalacion de docker
 
